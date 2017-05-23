@@ -18,6 +18,8 @@ import {
 
 import * as firebase from "firebase";
 
+import Database from "./src/firebaseDatabase.js";
+
 const onButtonPress = () => {
     Alert.alert('Button has been pressed!');
 };
@@ -42,14 +44,12 @@ export default class P20170411 extends Component {
             
         Alert.alert('onSignupPress');
 
-
         this.signup(this.state.account, this.state.password);
     }
 
     async signup(email, pass) {
 
         Alert.alert('signup');
-
 
         try {
             await firebase.auth()
@@ -62,6 +62,32 @@ export default class P20170411 extends Component {
         } catch (error) {
             console.log(error.toString())
         }
+    }
+
+    onLoginPress() {
+           
+        this.login(this.state.account, this.state.password);
+    }
+
+    async login(email, pass) {
+        
+        try {
+            await firebase.auth()
+                .signInWithEmailAndPassword(email, pass);
+
+            console.log("Logged In!");
+
+            // Navigate to the Home page
+
+        } catch (error) {
+            console.log(error.toString())
+        }
+    }
+
+    onWriteDataPress() {
+
+        // Database.setUserMobile(this.state.uid, this.state.mobileForm);
+        Database.setUserMobile("User1", this.state.password);
     }
 
     // 
@@ -113,17 +139,24 @@ export default class P20170411 extends Component {
 
           <View style={{flexDirection:'row', justifyContent:'space-around', alignItems:'center', flex: 2, width: 500, backgroundColor: 'steelblue'}} >
 
-              <Button state={{height:100, width:100}}
-                onPress={onButtonPress}
+              <Button state={{height:100, width:200}}
+                onPress={() => this.onLoginPress()}
                 title="登入"
                 accessibilityLabel="This sounds great!"
               />
 
-              <Button state={{height:100, width:100}}
+              <Button state={{height:100, width:200}}
                 onPress={() => this.onSignupPress()}
                 title="註冊"
                 accessibilityLabel="This sounds great!"
               />
+
+              <Button state={{height:100, width:200}}
+                onPress={() => this.onWriteDataPress()}
+                title="寫資料"
+                accessibilityLabel="This sounds great!"
+              />
+
 
           </View>
         </View>
@@ -132,6 +165,8 @@ export default class P20170411 extends Component {
 }
 
 /*
+                onPress={() => this.signup(this.state.account, this.state.password)}
+
         {/*  
       <View style={styles.container}>
       </View>
@@ -152,6 +187,50 @@ export default class P20170411 extends Component {
           Shake or press menu button for dev menu
         </Text>
 
+*/
+
+/*
+class Database {
+
+    /**
+     * Sets a users mobile number
+     * @param userId
+     * @param mobile
+     * @returns {firebase.Promise<any>|!firebase.Promise.<void>}
+     */
+/*
+    static setUserMobile(userId, mobile) {
+
+        let userMobilePath = "/user/" + userId + "/details";
+
+        return firebase.database().ref(userMobilePath).set({
+            mobile: mobile
+        })
+
+    }
+
+    /**
+     * Listen for changes to a users mobile number
+     * @param userId
+     * @param callback Users mobile number
+     */
+/*
+    static listenUserMobile(userId, callback) {
+
+        let userMobilePath = "/user/" + userId + "/details";
+
+        firebase.database().ref(userMobilePath).on('value', (snapshot) => {
+
+            var mobile = "";
+
+            if (snapshot.val()) {
+                mobile = snapshot.val().mobile
+            }
+
+            callback(mobile)
+        });
+    }
+}
 */
 
 
