@@ -75,7 +75,9 @@ export default class P20170411 extends Component {
             await firebase.auth()
                 .signInWithEmailAndPassword(email, pass);
 
-            console.log("Logged In!");
+            Alert.alert("Logged In!");
+
+            // console.log("Logged In!");
 
             // Navigate to the Home page
 
